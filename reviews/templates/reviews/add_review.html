@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Review</title>
+</head>
+<body>
+    <h1>Add a Review for "{{ book.title }}"</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+    <p>
+        <a href="{% url 'home' %}">Back to Home</a>
+    </p>
+</body>
+</html>
