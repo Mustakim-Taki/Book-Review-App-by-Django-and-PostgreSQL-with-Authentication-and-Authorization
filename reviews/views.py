@@ -8,10 +8,70 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
 from django.contrib.admin.views.decorators import staff_member_required
 from .forms import BookForm
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from .models import Book, Review
+from .serializers import BookSerializer, ReviewSerializer
+
+
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+
+
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+
+
 # Create your views here.
 
 
+#200
+#400
+#401
+#G
 # Registration view
+
+# API for Books
+class BookListCreateView(ListCreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    #permission_classes = [IsAuthenticatedOrReadOnly]
+
+class BookRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    #permission_classes = [IsAuthenticatedOrReadOnly]
+
+# Replace ReviewViewSet with Generic Views
+class ReviewListCreateView(ListCreateAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    #permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        # Automatically associate the logged-in user with the review
+        serializer.save(user=self.request.user)
+
+class ReviewRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    #permission_classes = [IsAuthenticatedOrReadOnly]
+
+
+
+# class BookViewSet(viewsets.ModelViewSet):
+#     queryset = Book.objects.all()
+#     serializer_class = BookSerializer
+#     # permission_classes = [IsAuthenticatedOrReadOnly]
+
+# # API for Reviews
+# class ReviewViewSet(viewsets.ModelViewSet):
+#     queryset = Review.objects.all()
+#     serializer_class = ReviewSerializer
+#     # permission_classes = [IsAuthenticatedOrReadOnly]
+
+#     def perform_create(self, serializer):
+#         # Automatically assign the logged-in user to the review
+#         serializer.save(user=self.request.user)
+
 
 def register(request):
     if request.method == 'POST':
@@ -44,7 +104,7 @@ def logout_view(request):
 
 # Account page view
 
-@login_required
+# @login_required
 def account(request):
     reviews = Review.objects.filter(user=request.user)  # User-specific reviews
     books = Book.objects.all()  # All books, for admin and review selection

@@ -1,8 +1,22 @@
 # reviews/urls.py
-from django.urls import path
+from django.urls import path, include
 from . import views
+from rest_framework.routers import DefaultRouter
+#from .views import BookViewSet, ReviewViewSet
+
+from .views import (
+    BookListCreateView,
+    BookRetrieveUpdateDestroyView,
+    ReviewListCreateView,
+    ReviewRetrieveUpdateDestroyView,
+)
 
 
+
+
+# router = DefaultRouter()
+# router.register(r'books', BookViewSet)  # /api/books/
+# router.register(r'reviews', ReviewViewSet) 
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -36,3 +50,17 @@ urlpatterns += [
     path('book/add/', views.add_book, name='add_book'),
 
 ]
+
+urlpatterns += [
+    # Books API
+    path('api/books/', BookListCreateView.as_view(), name='book-list-create'),
+    path('api/books/<int:pk>/', BookRetrieveUpdateDestroyView.as_view(), name='book-retrieve-update-destroy'),
+
+    # Reviews API
+    path('api/reviews/', ReviewListCreateView.as_view(), name='review-list-create'),
+    path('api/reviews/<int:pk>/', ReviewRetrieveUpdateDestroyView.as_view(), name='review-retrieve-update-destroy'),
+]
+# urlpatterns += [
+#     path('api/', include(router.urls)),  # API endpoints
+#     # Add your existing frontend routes here
+# ]
