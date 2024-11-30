@@ -1,1 +1,2 @@
 # Book-Review-App-by-Django-and-PostgreSQL-with-Authentication-and-Authorization
+<p> Hi!!! This is my first Django App where I have used RESTAPI, PostGreSQL, Authentication, Authorization in a MVT manner. Here, I can add books. What you can do is login/register to website, and add your book review. I have a plan to push it in render or somewhere. Hopefully will meet you then. Thank You. </p>
